@@ -16,9 +16,38 @@ class TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+
+
         generateData()
+        
+    }
+    func tableView(_ tableView: UITableView, numberOfSectionsIn section: Int) -> Int {
+        return 1
     }
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
+        return numbers.count
+    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "mathCell", for: indexPath) as! MathTableViewCell
+        let selectedNumbers = numbers[indexPath.row]
+        print(selectedNumbers)
+        cell.firstNumberLabel?.text = "\(selectedNumbers[0])"
+        cell.secondNumberLabel?.text = "\(selectedNumbers[1])"
+        cell.thirdNumberLabel?.text = "\(selectedNumbers[2])"
+        cell.fourthNumberLabel?.text = "\(selectedNumbers[3])"        
+        return cell
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier != "mathHandoff" {return}
+        if let dest = segue.destination as? DisplayMathViewController,
+            let indexPath = tableView.indexPathForSelectedRow {
+            print(indexPath.row)
+            dest.numbers = numbers[indexPath.row]
+        }
+        
+    }
     
     
     
